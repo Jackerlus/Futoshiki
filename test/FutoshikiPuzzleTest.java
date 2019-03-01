@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class FutoshikiPuzzleTest{
     public FutoshikiPuzzleTest(int testSize) {
@@ -12,24 +11,33 @@ class FutoshikiPuzzleTest{
     private FutoshikiPuzzle futoshiki;
 
     @Test
-    //Test that grid numbers are being set
+    //Test that grid numbers are being set and invalid input is rejected
     public void testSetSquare() {
         futoshiki.setSquare(2, 3, 9);
         assertEquals(9, futoshiki.getGrid()[2][3]);
+
+        futoshiki.setSquare(2, 3, 50);
+        assertNotEquals(50, futoshiki.getGrid()[2][3]);
     }
 
     @Test
-    //Test that row constraints are being set
+    //Test that row constraints are being set and invalid input is rejected
     public void testSetRowConstraint() {
         futoshiki.setRowConstraint(2, 2, '<');
         assertEquals('<', futoshiki.getRowConstr()[2][2]);
+
+        futoshiki.setRowConstraint(2, 2, '*');
+        assertNotEquals('*', futoshiki.getRowConstr()[2][2]);
     }
 
     @Test
-    //Test that column constraints are being set
+    //Test that column constraints are being set and invalid input is rejected
     public void testSetColConstraint() {
         futoshiki.setColConstraint(2, 2, '^');
         assertEquals('^', futoshiki.getColConstr()[2][2]);
+
+        futoshiki.setColConstraint(2, 2, '*');
+        assertNotEquals('*', futoshiki.getColConstr()[2][2]);
     }
 
     @Test
