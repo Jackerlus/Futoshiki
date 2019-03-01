@@ -30,7 +30,7 @@ class FutoshikiPuzzle {
 	}
 
 	public void setSquare(int x, int y, int value) {
-		if (x <= gridSize && y <= gridSize) {
+		if (x <= gridSize && y <= gridSize && value >= 0 && value <= 9) {
 			grid[x][y] = value;
 		} else {
 			System.out.println("Error - invalid input.");
