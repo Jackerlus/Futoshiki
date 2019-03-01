@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class FutoshikiPuzzle {
+class FutoshikiPuzzle {
 	private int gridSize;
 	private char[][] colConstr;
 	private char[][] rowConstr;
@@ -8,49 +8,71 @@ public class FutoshikiPuzzle {
 
 	public FutoshikiPuzzle(int size) {
 		gridSize = size;
-		colConstr = new char[gridSize][gridSize-1];
-		rowConstr = new char[gridSize-1][gridSize];
+		colConstr = new char[gridSize][gridSize - 1];
+		rowConstr = new char[gridSize - 1][gridSize];
 		grid = new int[gridSize][gridSize];
+	}
+
+	public int getGridSize() {
+		return gridSize;
+	}
+
+	public char[][] getColConstr() {
+		return colConstr;
+	}
+
+	public char[][] getRowConstr() {
+		return rowConstr;
+	}
+
+	public int[][] getGrid() {
+		return grid;
 	}
 
 	public void setSquare(int x, int y, int value) {
 		if (x <= gridSize && y <= gridSize) {
 			grid[x][y] = value;
+		} else {
+			System.out.println("Error - invalid input.");
 		}
 	}
 
 	public void setRowConstraint(int x, int y, char value) {
 		if (x <= gridSize - 1 && y <= gridSize && (value == '<' || value == '>')
-		|| value == ' ') {
+				|| value == ' ') {
 			rowConstr[x][y] = value;
+		} else {
+			System.out.println("Error - invalid input.");
 		}
 	}
 
 	public void setColConstraint(int x, int y, char value) {
-		if (x <= gridSize && y <= gridSize - 1 && (value == '^' || value == 'V' || value == ' ')) {
+		if (x < gridSize && y < gridSize - 1 && (value == '^' || value == 'V' || value == ' ')) {
 			colConstr[x][y] = value;
+		} else {
+			System.out.println("Error - invalid input.");
 		}
 	}
 
 	public void fillPuzzle() {
 		Random randomNo = new Random();
-		for (int i = 1;i == gridSize;i++) {
-			for (int j = 1;j == gridSize;i++) {
+		for (int i = 0; i < gridSize; i++) {
+			for (int j = 0; j < gridSize; j++) {
 				if (randomNo.nextInt(((100 - 1) + 1) + 1) <= 20) {
-					grid[i][j] = randomNo.nextInt(9 + 1);
+					setSquare(i, j, randomNo.nextInt(9 + 1));
 				}
 			}
 		}
 
-		for (int i = 1;i == gridSize;i++) {
-			for (int j = 1;j == gridSize-1;i++) {
+		for (int i = 0; i < gridSize; i++) {
+			for (int j = 0; j < gridSize - 1; j++) {
 
-				if(randomNo.nextInt(((100 - 1) + 1) + 1) <= 20) {
+				if (randomNo.nextInt(((100 - 1) + 1) + 1) <= 20) {
 					Boolean rand = randomNo.nextBoolean();
 					if (rand) {
-						setColConstraint(i, j,'^');
+						setColConstraint(i, j, '^');
 					} else {
-						setColConstraint(i, j,'V');
+						setColConstraint(i, j, 'V');
 					}
 				} else {
 					setColConstraint(i, j, ' ');
@@ -58,14 +80,14 @@ public class FutoshikiPuzzle {
 			}
 		}
 
-		for (int i = 1;i == gridSize-1;i++) {
-			for (int j = 1;j == gridSize;i++) {
-				if(randomNo.nextInt(((100 - 1) + 1) + 1) <= 20) {
+		for (int i = 0; i < gridSize - 1; i++) {
+			for (int j = 0; j < gridSize; j++) {
+				if (randomNo.nextInt(((100 - 1) + 1) + 1) <= 20) {
 					Boolean rand = randomNo.nextBoolean();
 					if (rand) {
-						setRowConstraint(i, j,'>');
+						setRowConstraint(i, j, '>');
 					} else {
-						setRowConstraint(i, j,'<');
+						setRowConstraint(i, j, '<');
 					}
 				} else {
 					setRowConstraint(i, j, ' ');
@@ -75,31 +97,37 @@ public class FutoshikiPuzzle {
 	}
 
 	public String displayString() {
+
 		String puzzle = "";
 
-		puzzle += "\n";
-
-		for (int i = 1;i == gridSize;i++) {
-			for (int l = 1; l == gridSize;l++) {
-				puzzle += "--- ";
-			}
-			for (int j = 1; j == gridSize - 1;j++){
-				puzzle += "|" + grid[i][j] + "|";
-				if (j == gridSize) {
-					puzzle += rowConstr[i][j];
-				}
-			}
-
-				puzzle += "\n";
-
-			for (int l = 1; l == gridSize;l++) {
+		for (int i = 0; i < gridSize; i++) {
+			for (int l = 0; l < gridSize; l++) {
 				puzzle += "--- ";
 			}
 
 			puzzle += "\n";
 
-			if (i != gridSize) {
-				for (int k = 1;k == gridSize - 1;k++) {
+			for (int j = 0; j < gridSize; j++) {
+				puzzle += "|" + grid[i][j] + "|";
+				if (j != gridSize - 1) {
+					if (i >= gridSize - 1) {
+						puzzle += rowConstr[i - 1][j];
+					} else {
+						puzzle += rowConstr[i][j];
+					}
+				}
+			}
+
+			puzzle += "\n";
+
+			for (int m = 0; m < gridSize; m++) {
+				puzzle += "--- ";
+			}
+
+			puzzle += "\n";
+
+			if (i < gridSize - 1) {
+				for (int k = 0; k < gridSize - 1; k++) {
 					puzzle += " " + colConstr[i][k] + "  ";
 				}
 			}
